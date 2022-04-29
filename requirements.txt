@@ -4,3 +4,10 @@ pyserial
 pyusb
 setuptools
 wheel
+Cheetah3
+Pillow
+requests
+# Optional: for extended almanac information:
+pyephem
+# Required if you are using MySQL (MariaDB):
+pymysql

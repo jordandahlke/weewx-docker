@@ -1,13 +1,13 @@
 # weewx-docker 🌩🐳 #
 
-[![GitHub Build Status](https://github.com/felddy/weewx-docker/workflows/build/badge.svg)](https://github.com/felddy/weewx-docker/actions)
+[![GitHub Build Status](https://github.com/jdahlke/weewx-docker/workflows/build/badge.svg)](https://github.com/jdahlke/weewx-docker/actions)
 [![CII Best Practices](https://bestpractices.coreinfrastructure.org/projects/6003/badge)](https://bestpractices.coreinfrastructure.org/projects/6003)
-[![CodeQL](https://github.com/felddy/weewx-docker/workflows/CodeQL/badge.svg)](https://github.com/felddy/weewx-docker/actions/workflows/codeql-analysis.yml)
-[![WeeWX Version](https://img.shields.io/github/v/release/felddy/weewx-docker?color=brightgreen)](https://hub.docker.com/r/felddy/weewx)
+[![CodeQL](https://github.com/jdahlke/weewx-docker/workflows/CodeQL/badge.svg)](https://github.com/jdahlke/weewx-docker/actions/workflows/codeql-analysis.yml)
+[![WeeWX Version](https://img.shields.io/github/v/release/jdahlke/weewx-docker?color=brightgreen)](https://hub.docker.com/r/jdahlke/weewx)
 
-[![Docker Pulls](https://img.shields.io/docker/pulls/felddy/weewx)](https://hub.docker.com/r/felddy/weewx)
-[![Docker Image Size (latest by date)](https://img.shields.io/docker/image-size/felddy/weewx)](https://hub.docker.com/r/felddy/weewx)
-[![Platforms](https://img.shields.io/badge/platforms-amd64%20%7C%20arm%2Fv6%20%7C%20arm%2Fv7%20%7C%20arm64%20%7C%20ppc64le%20%7C%20s390x-blue)](https://hub.docker.com/r/felddy/weewx/tags)
+[![Docker Pulls](https://img.shields.io/docker/pulls/jdahlke/weewx)](https://hub.docker.com/r/jdahlke/weewx)
+[![Docker Image Size (latest by date)](https://img.shields.io/docker/image-size/jdahlke/weewx)](https://hub.docker.com/r/jdahlke/weewx)
+[![Platforms](https://img.shields.io/badge/platforms-amd64%20%7C%20arm%2Fv6%20%7C%20arm%2Fv7%20%7C%20arm64%20%7C%20ppc64le%20%7C%20s390x-blue)](https://hub.docker.com/r/jdahlke/weewx/tags)
 
 This docker container can be used to quickly get a
 [WeeWX](http://weewx.com) instance up and running.
@@ -16,15 +16,19 @@ This container has the following WeeWX extensions installed:
 
 - [interceptor](https://github.com/matthewwall/weewx-interceptor)
 - [mqtt](https://github.com/weewx/weewx/wiki/mqtt)
+- [influx2](https://github.com/jordandahlke/weewx-influx2)
+- [WLLDriver](https://github.com/jordandahlke/weatherlinklive-driver-weewx)
+- [WeatherLinkLive](https://github.com/michael-slx/weewx-weatherlink-live)
 
+Plus Python modules Cheetah3, Pillow, requests, pyephem, and pymysql
 ## Running ##
 
 ### Running with Docker ###
 
-Pull `felddy/weewx` from the Docker repository:
+Pull `jdahlke/weewx` from the Docker repository:
 
 ```console
-docker pull felddy/weewx
+docker pull jdahlke/weewx
 ```
 
 ### Run ###
@@ -46,7 +50,7 @@ volumes:
 
 services:
   weewx:
-    image: felddy/weewx
+    image: jdahlke/weewx
     init: true
     restart: "yes"
     volumes:
@@ -135,8 +139,8 @@ Build the image locally using this git repository as the [build context](https:/
 
 ```console
 docker build \
-  --tag felddy/weewx:4.8.0 \
-  https://github.com/felddy/weewx-docker.git#develop
+  --tag jdahlke/weewx:4.8.0 \
+  https://github.com/jdahlke/weewx-docker.git#develop
 ```
 
 ## Cross-platform builds ##
@@ -149,7 +153,7 @@ Docker:
    or the command line:
 
     ```console
-    git clone https://github.com/felddy/weewx-docker.git
+    git clone https://github.com/jdahlke/weewx-docker.git
     cd weewx-docker
     ```
 
@@ -166,7 +170,7 @@ Docker:
       --file Dockerfile-x \
       --platform linux/amd64 \
       --output type=docker \
-      --tag felddy/weewx:4.8.0 .
+      --tag jdahlke/weewx:4.8.0 .
     ```
 
 ## Debugging ##
