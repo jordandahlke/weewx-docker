@@ -4,11 +4,12 @@ set -o nounset
 set -o errexit
 set -o pipefail
 
-CONF_FILE="/data/weewx.conf"
+WEEWX_ROOT="/data"
+CONF_FILE="${WEEWX_ROOT}/weewx.conf"
 
 # echo version before starting syslog so we don't confound our tests
-if [ "$1" = "--version" ]; then
-  gosu weewx:weewx ./bin/weewxd --version
+if [ $# -gt 0 ] && [ "$1" = "--version" ]; then
+  gosu weewx:weewx weewxd --version
   exit 0
 fi
 
@@ -25,39 +26,17 @@ if [ "$(id -u)" = 0 ]; then
   fi
 fi
 
-copy_default_config() {
-  # create a default configuration on the data volume
-  echo "Creating a configration file on the container data volume."
-  cp weewx.conf "${CONF_FILE}"
-  echo "The default configuration has been copied."
-  # Change the default location of the SQLITE database to the volume
-  echo "Setting SQLITE_ROOT to the container volume."
-  sed "s/SQLITE_ROOT =.*/SQLITE_ROOT = \/data/g" "${CONF_FILE}" > /tmp/weewx.conf
-  mv /tmp/weewx.conf "${CONF_FILE}"
-}
-
-if [ "$1" = "--gen-test-config" ]; then
-  copy_default_config
-  echo "Generating a test configuration."
-  ./bin/wee_config --reconfigure --no-prompt "${CONF_FILE}"
-  exit 0
-fi
-
-if [ "$1" = "--shell" ]; then
-  /bin/sh
-  exit $?
-fi
-
-if [ "$1" = "--upgrade" ]; then
-  ./bin/wee_config --upgrade --no-prompt --dist-config weewx.conf "${CONF_FILE}"
-  exit $?
-fi
-
 if [ ! -f "${CONF_FILE}" ]; then
-  copy_default_config
-  echo "Running configuration tool."
-  ./bin/wee_config --reconfigure "${CONF_FILE}"
-  exit 1
+  weectl station create --no-prompt ${WEEWX_ROOT}
+  echo "A new set of configurations was created."
+  echo "Please edit ${CONF_FILE} and restart the container."
 fi
 
-./bin/weewxd "$@"
+# if we have any parameters we'll send them to weectl
+
+if [ $# -gt 0 ]; then
+  weectl "$@" --config ${CONF_FILE}
+  exit 0
+else
+  weewxd --config ${CONF_FILE}
+fi
