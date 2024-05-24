@@ -17,9 +17,6 @@ RUN apt-get update && apt-get install -y clang lld
 ARG TARGETPLATFORM
 RUN xx-apt install -y libc6-dev
 
-# RUN apk --no-cache add cargo gcc libffi-dev make musl-dev openssl-dev python3-dev tar
-RUN apt-get install -y wget
-
 WORKDIR /tmp
 RUN \
   --mount=type=cache,mode=0777,target=/var/cache/apt \
@@ -30,17 +27,8 @@ pip install --upgrade virtualenv
 virtualenv /opt/venv
 EOF
 
-COPY src/hashes README.md requirements.txt setup.py ./
+COPY README.md requirements.txt setup.py ./
 COPY src/_version.py ./src/_version.py
-
-# Download sources and verify hashes
-RUN wget -O "${ARCHIVE}" "https://weewx.com/downloads/released_versions/${ARCHIVE}"
-RUN wget -O weewx-mqtt.zip https://github.com/matthewwall/weewx-mqtt/archive/master.zip
-RUN wget -O weewx-interceptor.zip https://github.com/matthewwall/weewx-interceptor/archive/master.zip
-RUN sha256sum -c < hashes
-
-# WeeWX setup
-RUN tar --extract --gunzip --directory /root --strip-components=1 --file "${ARCHIVE}"
 
 # Python setup
 RUN python -m venv /opt/venv
@@ -49,8 +37,6 @@ RUN pip install --no-cache --requirement requirements.txt
 
 WORKDIR /root
 
-# RUN bin/wee_extension --install /tmp/weewx-mqtt.zip
-# RUN bin/wee_extension --install /tmp/weewx-interceptor.zip
 COPY src/entrypoint.sh src/_version.py ./
 
 FROM python:${PYTHON_VERSION}-slim AS final-stage
@@ -76,12 +62,10 @@ WORKDIR ${WEEWX_HOME}
 COPY --from=build-stage /opt/venv /opt/venv
 COPY --from=build-stage /root ${WEEWX_HOME}
 
-RUN mkdir /data && \
-  cp weewx.conf /data && \
-  chown -R weewx:weewx ${WEEWX_HOME}
+RUN mkdir /data \
+  && chown -R weewx:weewx /data
 
 VOLUME ["/data"]
 
 ENV PATH="/opt/venv/bin:$PATH"
 ENTRYPOINT ["./entrypoint.sh"]
-CMD ["/data/weewx.conf"]
