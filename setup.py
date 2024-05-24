@@ -68,20 +68,20 @@ setup(
     py_modules=[splitext(basename(path))[0] for path in glob("src/*.py")],
     install_requires=[
         "configobj == 5.0.8",
-        "paho-mqtt == 1.6.1",
+        "paho-mqtt == 2.1.0",
         "pyserial == 3.5",
         "pyusb == 1.2.1",
         "semver == 3.0.2",
-        "setuptools == 69.2.0",
+        "setuptools == 70.0.0",
         "wheel == 0.43.0",
     ],
     extras_require={
         "test": [
             "coverage == 6.5.0",
-            "coveralls == 3.3.1",
-            "docker == 7.0.0",
-            "pre-commit == 3.7.0",
-            "pytest == 8.1.1",
+            "coveralls == 4.0.1",
+            "docker == 7.1.0",
+            "pre-commit == 3.7.1",
+            "pytest == 8.2.1",
             "pytest-cov == 5.0.0",
         ]
     },
