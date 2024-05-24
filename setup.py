@@ -68,6 +68,7 @@ setup(
         "pyusb == 1.2.1",
         "semver == 3.0.2",
         "setuptools == 75.6.0",
+        "weewx == 5.1.0",
         "wheel == 0.45.1",
     ],
     extras_require={
