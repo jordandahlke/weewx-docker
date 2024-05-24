@@ -64,7 +64,6 @@ setup(
     py_modules=[splitext(basename(path))[0] for path in glob("src/*.py")],
     install_requires=[
         "configobj == 5.0.9",
-        "paho-mqtt == 2.1.0",
         "pyserial == 3.5",
         "pyusb == 1.2.1",
         "semver == 3.0.2",
