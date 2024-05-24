@@ -1,17 +1,12 @@
 ---
-version: "3.8"
+name: "weewx"
 
 volumes:
   data:
 
 services:
   weewx:
-    build:
-      context: .
-      dockerfile: Dockerfile
-    image: felddy/weewx:4.8.0
-    init: true
-    restart: "no"
+    image: felddy/weewx:5.0.2
     # devices:
     #   - "/dev/ttyUSB0:/dev/ttyUSB0"
     volumes:
