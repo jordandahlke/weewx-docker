@@ -128,6 +128,14 @@ services:
 | `WEEWX_UID`    | `uid` the daemon will be run under | `weewx` |
 | `WEEWX_GID`    | `gid` the deamon will be run under | `weewx` |
 
+## Installing WeeWX Extensions ##
+
+```console
+docker compose run weewx \
+  extension install \
+  https://github.com/matthewwall/weewx-windy/archive/master.zip
+```
+
 ## Building from source ##
 
 Build the image locally using this git repository as the [build context](https://docs.docker.com/engine/reference/commandline/build/#git-repositories):
