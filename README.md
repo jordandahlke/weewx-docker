@@ -40,16 +40,14 @@ Modify any paths or devices as needed:
 
 ```yaml
 ---
-version: "3.8"
+name: "weewx"
 
 volumes:
   data:
 
 services:
   weewx:
-    image: felddy/weewx
-    init: true
-    restart: "yes"
+    image: felddy/weewx:5.1.0
     volumes:
       - type: bind
         source: ./data
