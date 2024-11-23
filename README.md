@@ -136,7 +136,7 @@ Build the image locally using this git repository as the [build context](https:/
 
 ```console
 docker build \
-  --tag felddy/weewx:4.8.0 \
+  --tag felddy/weewx:5.1.0 \
   https://github.com/felddy/weewx-docker.git#develop
 ```
 
@@ -160,7 +160,7 @@ Docker:
     docker buildx build \
       --platform linux/amd64 \
       --output type=docker \
-      --tag felddy/weewx:4.8.0 .
+      --tag felddy/weewx:5.1.0 .
     ```
 
 ## Debugging ##

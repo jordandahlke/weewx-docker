@@ -2,15 +2,11 @@
 
 ARG PYTHON_VERSION=3.13.0
 ARG WEEWX_UID=421
-ARG WEEWX_VERSION=5.0.2
 ARG WEEWX_HOME="/home/weewx"
 
 FROM --platform=$BUILDPLATFORM tonistiigi/xx AS xx
 
 FROM --platform=$BUILDPLATFORM python:${PYTHON_VERSION} AS build-stage
-
-ARG WEEWX_VERSION
-ARG ARCHIVE="weewx-${WEEWX_VERSION}.tar.gz"
 
 COPY --from=xx / /
 RUN apt-get update && apt-get install -y clang lld
@@ -44,7 +40,6 @@ FROM python:${PYTHON_VERSION}-slim AS final-stage
 ARG TARGETPLATFORM
 ARG WEEWX_HOME
 ARG WEEWX_UID
-ARG WEEWX_VERSION
 
 # For a list of pre-defined annotation keys and value types see:
 # https://github.com/opencontainers/image-spec/blob/master/annotations.md
