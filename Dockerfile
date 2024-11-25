@@ -53,7 +53,7 @@ RUN bin/wee_extension --install /tmp/weewx-mqtt.zip
 RUN bin/wee_extension --install /tmp/weewx-interceptor.zip
 COPY src/entrypoint.sh src/_version.py ./
 
-FROM python:${PYTHON_VERSION}-slim-bullseye as final-stage
+FROM python:${PYTHON_VERSION}-slim as final-stage
 
 ARG TARGETPLATFORM
 ARG WEEWX_HOME
