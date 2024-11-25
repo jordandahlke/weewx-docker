@@ -61,6 +61,7 @@ ARG WEEWX_UID
 
 # For a list of pre-defined annotation keys and value types see:
 # https://github.com/opencontainers/image-spec/blob/master/annotations.md
+#
 # Note: Additional labels are added by the build workflow.
 LABEL org.opencontainers.image.authors="markf+github@geekpad.com"
 LABEL org.opencontainers.image.vendor="Geekpad"
