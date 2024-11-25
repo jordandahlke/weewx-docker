@@ -13,11 +13,6 @@
 This docker container can be used to quickly get a
 [WeeWX](http://weewx.com) instance up and running.
 
-This container has the following WeeWX extensions pre-installed:
-
-- [interceptor](https://github.com/matthewwall/weewx-interceptor)
-- [mqtt](https://github.com/weewx/weewx/wiki/mqtt)
-
 ## Running ##
 
 ### Running with Docker ###
@@ -100,7 +95,7 @@ services:
 1. Update your configuration file (a backup will be created):
 
     ```console
-    docker compose run weewx --upgrade
+    docker compose run weewx station upgrade
     ```
 
 1. Read through the new configuration and verify.
@@ -113,6 +108,26 @@ services:
     ```console
     docker compose up -d
     ```
+
+## Installing WeeWX Extensions ##
+
+```console
+docker compose run weewx \
+  extension install \
+  https://github.com/matthewwall/weewx-windy/archive/master.zip
+```
+
+```console
+docker compose run weewx \
+  extension install \
+  https://github.com/matthewwall/weewx-mqtt/archive/master.zip
+```
+
+## Installing Additional Python Packages ##
+
+```console
+docker compose run --entrypoint pip weewx install paho_mqtt
+```
 
 ## Volumes ##
 
@@ -127,14 +142,6 @@ services:
 | `TIMEZONE`     | Container [TZ database name](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List) | `UTC` |
 | `WEEWX_UID`    | `uid` the daemon will be run under | `weewx` |
 | `WEEWX_GID`    | `gid` the deamon will be run under | `weewx` |
-
-## Installing WeeWX Extensions ##
-
-```console
-docker compose run weewx \
-  extension install \
-  https://github.com/matthewwall/weewx-windy/archive/master.zip
-```
 
 ## Building from source ##
 
