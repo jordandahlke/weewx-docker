@@ -1,13 +1,13 @@
 # syntax=docker/dockerfile:1
 
-ARG PYTHON_VERSION=3.11.2
+ARG PYTHON_VERSION=3.13.0
 ARG WEEWX_UID=421
 ARG WEEWX_VERSION=4.10.2
 ARG WEEWX_HOME="/home/weewx"
 
 FROM --platform=$BUILDPLATFORM tonistiigi/xx AS xx
 
-FROM --platform=$BUILDPLATFORM python:${PYTHON_VERSION} as build-stage
+FROM --platform=$BUILDPLATFORM python:${PYTHON_VERSION} AS build-stage
 
 ARG WEEWX_VERSION
 ARG ARCHIVE="weewx-${WEEWX_VERSION}.tar.gz"
@@ -49,11 +49,11 @@ RUN pip install --no-cache --requirement requirements.txt
 
 WORKDIR /root
 
-RUN bin/wee_extension --install /tmp/weewx-mqtt.zip
-RUN bin/wee_extension --install /tmp/weewx-interceptor.zip
+# RUN bin/wee_extension --install /tmp/weewx-mqtt.zip
+# RUN bin/wee_extension --install /tmp/weewx-interceptor.zip
 COPY src/entrypoint.sh src/_version.py ./
 
-FROM python:${PYTHON_VERSION}-slim as final-stage
+FROM python:${PYTHON_VERSION}-slim AS final-stage
 
 ARG TARGETPLATFORM
 ARG WEEWX_HOME
@@ -65,7 +65,6 @@ ARG WEEWX_UID
 # Note: Additional labels are added by the build workflow.
 LABEL org.opencontainers.image.authors="markf+github@geekpad.com"
 LABEL org.opencontainers.image.vendor="Geekpad"
-LABEL com.weewx.version=${WEEWX_VERSION}
 
 RUN addgroup --system --gid ${WEEWX_UID} weewx \
   && adduser --system --uid ${WEEWX_UID} --ingroup weewx weewx
