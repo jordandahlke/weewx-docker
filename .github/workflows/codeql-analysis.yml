@@ -40,7 +40,7 @@ jobs:
           egress-policy: audit
       - id: github-status
         name: Check GitHub status
-        uses: crazy-max/ghaction-github-status@v3
+        uses: crazy-max/ghaction-github-status@v4
       - id: dump-context
         name: Dump context
         uses: crazy-max/ghaction-dump-context@v2
@@ -70,11 +70,11 @@ jobs:
           egress-policy: audit
 
       - name: Checkout repository
-        uses: actions/checkout@692973e3d937129bcbf40652eb9f2f61becf3332  # tag=v4.1.7
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683  # tag=v4.2.2
 
       # Initializes the CodeQL tools for scanning.
       - name: Initialize CodeQL
-        uses: github/codeql-action/init@2c779ab0d087cd7fe7b826087247c2c81f27bfa6  # tag=codeql-bundle-v3.26.5
+        uses: github/codeql-action/init@f09c1c0a94de965c15400f5634aa42fac8fb8f88  # tag=codeql-bundle-v3.27.5
         with:
           languages: ${{ matrix.language }}
 
@@ -84,7 +84,7 @@ jobs:
       # manually (see below).
       # manually (see below).
       - name: Autobuild
-        uses: github/codeql-action/autobuild@2c779ab0d087cd7fe7b826087247c2c81f27bfa6  # tag=codeql-bundle-v3.26.5
+        uses: github/codeql-action/autobuild@f09c1c0a94de965c15400f5634aa42fac8fb8f88  # tag=codeql-bundle-v3.27.5
 
       # ℹ️ Command-line programs to run using the OS shell. 📚
       # https://git.io/JvXDl
@@ -102,4 +102,4 @@ jobs:
       #     make release
 
       - name: Perform CodeQL Analysis
-        uses: github/codeql-action/analyze@2c779ab0d087cd7fe7b826087247c2c81f27bfa6  # tag=codeql-bundle-v3.26.5
+        uses: github/codeql-action/analyze@f09c1c0a94de965c15400f5634aa42fac8fb8f88  # tag=codeql-bundle-v3.27.5
