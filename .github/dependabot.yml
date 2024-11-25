@@ -5,10 +5,9 @@
 # these updates when the pull request(s) in the appropriate skeleton are merged
 # and Lineage processes these changes.
 
-version: 2
 updates:
-  - package-ecosystem: "docker"
-    directory: "/"
+  - directory: /
+    package-ecosystem: docker
     schedule:
       interval: "daily"
     labels:
@@ -35,8 +34,8 @@ updates:
         patterns:
           - "*"
 
-  - package-ecosystem: "pip"
-    directory: "/"
+  - directory: /
+    package-ecosystem: pip
     schedule:
       interval: "daily"
     labels:
