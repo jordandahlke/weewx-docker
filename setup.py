@@ -77,12 +77,12 @@ setup(
     ],
     extras_require={
         "test": [
-            "coverage == 6.5.0",
-            "coveralls == 4.0.1",
-            "docker == 7.1.0",
-            "pre-commit == 4.0.1",
-            "pytest == 8.3.3",
-            "pytest-cov == 6.0.0",
+            "coverage",
+            "coveralls",
+            "docker",
+            "pre-commit",
+            "pytest",
+            "pytest-cov",
         ]
     },
 )
