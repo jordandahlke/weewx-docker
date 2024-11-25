@@ -64,4 +64,6 @@ RUN mkdir /data \
 VOLUME ["/data"]
 
 ENV PATH="/opt/venv/bin:$PATH"
+ENV PIP_TARGET="/data/lib/python/site-packages"
+ENV PYTHONPATH="/data/lib/python/site-packages"
 ENTRYPOINT ["./entrypoint.sh"]
