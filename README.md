@@ -82,7 +82,7 @@ services:
    background with:
 
     ```console
-    docker compose up -d
+    docker compose up --detach
     ```
 
 ## Upgrading ##

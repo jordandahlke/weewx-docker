@@ -1,9 +1,13 @@
 ---
 
-version: 2
+# Any ignore directives should be uncommented in downstream projects to disable
+# Dependabot updates for the given dependency. Downstream projects will get
+# these updates when the pull request(s) in the appropriate skeleton are merged
+# and Lineage processes these changes.
+
 updates:
-  - package-ecosystem: "docker"
-    directory: "/"
+  - directory: /
+    package-ecosystem: docker
     schedule:
       interval: "daily"
     labels:
@@ -30,8 +34,8 @@ updates:
         patterns:
           - "*"
 
-  - package-ecosystem: "pip"
-    directory: "/"
+  - directory: /
+    package-ecosystem: pip
     schedule:
       interval: "daily"
     labels:
