@@ -15,21 +15,10 @@ This docker container can be used to quickly get a
 
 ## Running ##
 
-### Running with Docker ###
-
-Pull `felddy/weewx` from the Docker repository:
-
-```console
-docker pull felddy/weewx
-```
-
-### Run ###
-
 The easiest way to start the container is to create a
 `docker-compose.yml` similar to the following.  If you use a
 serial port to connect to your weather station, make sure the
-container has permissions to access the port.  The uid/gid can
-be set using the environment variables below.
+container has permissions to access the port.
 
 Modify any paths or devices as needed:
 
@@ -105,6 +94,19 @@ services:
     docker compose up -d
     ```
 
+## Migrating ##
+
+If you are migrating from a non-containerized WeeWX installation, you will need to
+configure the logger to write to the console.  Adding the following your `weewx.conf`
+will allow you to see the log output:
+
+```ini
+[Logging]
+    [[root]]
+      level = INFO
+      handlers = console,
+```
+
 ## Installing WeeWX Extensions ##
 
 ```console
@@ -123,19 +125,6 @@ docker compose run --rm weewx \
 
 ```console
 docker compose run --rm --entrypoint pip weewx install paho_mqtt
-```
-
-## Migrating ##
-
-If you are migrating from a non-containerized WeeWX installation, you will need to
-configure the logger to write to the console.  Adding the following your `weewx.conf`
-will allow you to see the log output:
-
-```ini
-[Logging]
-    [[root]]
-      level = INFO
-      handlers = console,
 ```
 
 ## Volumes ##
@@ -176,18 +165,6 @@ Docker:
       --output type=docker \
       --tag felddy/weewx:5.1.0 .
     ```
-
-## Debugging ##
-
-There are a few helper arguments that can be used to diagnose container issues
-in your environment.
-
-| Purpose | Command |
-|---------|---------|
-| Generate the default configuration | `docker compose run weewx` |
-| Upgrade a previous configuration | `docker compose run weewx --upgrade` |
-| Generate a test (simulator) configuration | `docker compose run weewx --gen-test-config` |
-| Drop into a shell in the container | `docker compose run weewx --shell` |
 
 ## Contributing ##
 
