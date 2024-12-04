@@ -23,7 +23,7 @@ pip install --upgrade virtualenv
 virtualenv /opt/venv
 EOF
 
-COPY README.md requirements.txt setup.py ./
+COPY pyproject.toml README.md requirements.txt ./
 COPY src/_version.py ./src/_version.py
 
 # Python setup
