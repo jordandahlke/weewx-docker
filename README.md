@@ -47,10 +47,6 @@ services:
       - type: bind
         source: ./data
         target: /data
-    environment:
-      - TIMEZONE=UTC
-      - WEEWX_UID=weewx
-      - WEEWX_GID=dialout
     devices:
       - "/dev/ttyUSB0:/dev/ttyUSB0"
 ```
@@ -65,7 +61,7 @@ services:
    the container and generate a configuration file:
 
     ```console
-    docker compose run weewx
+    docker compose run --rm weewx
     ```
 
 1. The configuration file will be created in the `data` directory.  You should
@@ -95,7 +91,7 @@ services:
 1. Update your configuration file (a backup will be created):
 
     ```console
-    docker compose run weewx station upgrade
+    docker compose run --rm weewx station upgrade
     ```
 
 1. Read through the new configuration and verify.
@@ -112,21 +108,34 @@ services:
 ## Installing WeeWX Extensions ##
 
 ```console
-docker compose run weewx \
-  extension install \
+docker compose run --rm weewx \
+  extension install --yes \
   https://github.com/matthewwall/weewx-windy/archive/master.zip
 ```
 
 ```console
-docker compose run weewx \
-  extension install \
+docker compose run --rm weewx \
+  extension install --yes \
   https://github.com/matthewwall/weewx-mqtt/archive/master.zip
 ```
 
 ## Installing Additional Python Packages ##
 
 ```console
-docker compose run --entrypoint pip weewx install paho_mqtt
+docker compose run --rm --entrypoint pip weewx install paho_mqtt
+```
+
+## Migrating ##
+
+If you are migrating from a non-containerized WeeWX installation, you will need to
+configure the logger to write to the console.  Adding the following your `weewx.conf`
+will allow you to see the log output:
+
+```ini
+[Logging]
+    [[root]]
+      level = INFO
+      handlers = console,
 ```
 
 ## Volumes ##
@@ -134,14 +143,6 @@ docker compose run --entrypoint pip weewx install paho_mqtt
 | Mount point | Purpose        |
 |-------------|----------------|
 | `/data`     | configuration file and sqlite database storage |
-
-## Environment Variables ##
-
-| Variable       | Purpose | Default |
-|----------------|---------|---------|
-| `TIMEZONE`     | Container [TZ database name](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List) | `UTC` |
-| `WEEWX_UID`    | `uid` the daemon will be run under | `weewx` |
-| `WEEWX_GID`    | `gid` the deamon will be run under | `weewx` |
 
 ## Building from source ##
 

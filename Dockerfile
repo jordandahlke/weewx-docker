@@ -1,7 +1,7 @@
 # syntax=docker/dockerfile:1
 
 ARG PYTHON_VERSION=3.13.0
-ARG WEEWX_UID=421
+ARG WEEWX_UID=1000
 ARG WEEWX_HOME="/home/weewx"
 
 FROM --platform=$BUILDPLATFORM tonistiigi/xx AS xx
@@ -51,7 +51,7 @@ LABEL org.opencontainers.image.vendor="Geekpad"
 RUN addgroup --system --gid ${WEEWX_UID} weewx \
   && adduser --system --uid ${WEEWX_UID} --ingroup weewx weewx
 
-RUN apt-get update && apt-get install -y libusb-1.0-0 gosu busybox-syslogd tzdata
+RUN apt-get update && apt-get install -y libusb-1.0-0
 
 WORKDIR ${WEEWX_HOME}
 
@@ -66,4 +66,5 @@ VOLUME ["/data"]
 ENV PATH="/opt/venv/bin:$PATH"
 ENV PIP_TARGET="/data/lib/python/site-packages"
 ENV PYTHONPATH="/data/lib/python/site-packages"
+USER weewx
 ENTRYPOINT ["./entrypoint.sh"]

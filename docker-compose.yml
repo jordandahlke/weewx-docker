@@ -13,7 +13,3 @@ services:
       - type: bind
         source: ./data
         target: /data
-    environment:
-      - TIMEZONE=UTC
-      - WEEWX_UID=weewx
-      - WEEWX_GID=dialout
