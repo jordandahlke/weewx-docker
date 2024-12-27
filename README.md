@@ -26,9 +26,6 @@ Modify any paths or devices as needed:
 ---
 name: "weewx"
 
-volumes:
-  data:
-
 services:
   weewx:
     image: felddy/weewx:5.1.0
