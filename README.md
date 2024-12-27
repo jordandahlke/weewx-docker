@@ -124,11 +124,32 @@ docker compose run --rm weewx \
 docker compose run --rm --entrypoint pip weewx install paho_mqtt
 ```
 
+## Image tags ##
+
+The images of this container are tagged with [semantic
+versions](https://semver.org) that align with the [version and build of
+WeeWX](https://weewx.com/docs.html) that they support.
+
+> [!TIP]
+> It is recommended that users use the major version tag: `:5` Using the major
+> tag will ensure that you receive the most recent version of the software that
+> is compatible with your saved data, and prevents inadvertent upgrades to a new
+> major version.
+
+| Image:tag | Description |
+|-----------|-------------|
+|`felddy/weewx:5`| The most recent image matching the major version number.  Most users will use this tag. |
+|`felddy/weewx:5.1`| The most recent image matching the major and minor version numbers. |
+|`felddy/weewx:5.1.0`| An exact image version. |
+
+See the [tags tab](https://hub.docker.com/r/felddy/weewx/tags) on Docker
+Hub for a list of all the supported tags.
+
 ## Volumes ##
 
 | Mount point | Purpose        |
 |-------------|----------------|
-| `/data`     | configuration file and sqlite database storage |
+| `/data`     | [WeeWX root](https://weewx.com/docs/5.1/usersguide/where/#location-of-weewx-components) directory |
 
 ## Building from source ##
 
