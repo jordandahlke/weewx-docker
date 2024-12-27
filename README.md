@@ -100,8 +100,8 @@ will allow you to see the log output:
 ```ini
 [Logging]
     [[root]]
-      level = INFO
-      handlers = console,
+        level = INFO
+        handlers = console,
 ```
 
 ## Installing WeeWX Extensions ##
