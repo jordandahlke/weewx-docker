@@ -88,7 +88,7 @@ services:
 1. Start the container up with the new image version:
 
     ```console
-    docker compose up -d
+    docker compose up --detach
     ```
 
 ## Migrating ##
