@@ -93,9 +93,9 @@ services:
 
 ## Migrating ##
 
-If you are migrating from a non-containerized WeeWX installation, you will need to
-configure the logger to write to the console.  Adding the following your `weewx.conf`
-will allow you to see the log output:
+If you are migrating a WeeWX installation, you need to configure the logger to
+write to the console. Add the following to your `weewx.conf` file to see the log
+output in the container logs:
 
 ```ini
 [Logging]
@@ -105,6 +105,10 @@ will allow you to see the log output:
 ```
 
 ## Installing WeeWX Extensions ##
+
+If arguments are passed to the container, they are forwarded on to the
+[`weectl`](https://weewx.com/docs/5.1/utilities/weectl-about/) command.  This
+can be used to install extensions:
 
 ```console
 docker compose run --rm weewx \
@@ -118,10 +122,14 @@ docker compose run --rm weewx \
   https://github.com/matthewwall/weewx-mqtt/archive/master.zip
 ```
 
-## Installing Additional Python Packages ##
+## Installing Python Packages ##
+
+To install and persist Python packages, use the `pip` command. The libraries
+will be installed into the `data` volume, ensuring they persist between
+container restarts.
 
 ```console
-docker compose run --rm --entrypoint pip weewx install paho_mqtt
+docker compose run --rm --entrypoint pip weewx install git+https://github.com/felddy/weewx-home-assistant@v1.0.0
 ```
 
 ## Image tags ##
