@@ -51,7 +51,7 @@ LABEL org.opencontainers.image.vendor="Geekpad"
 RUN addgroup --system --gid ${WEEWX_UID} weewx \
   && adduser --system --uid ${WEEWX_UID} --ingroup weewx weewx
 
-RUN apt-get update && apt-get install -y libusb-1.0-0
+RUN apt-get update && apt-get install -y git libusb-1.0-0
 
 WORKDIR ${WEEWX_HOME}
 
