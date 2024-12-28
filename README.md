@@ -13,51 +13,26 @@
 This docker container can be used to quickly get a
 [WeeWX](http://weewx.com) instance up and running.
 
-This container has the following WeeWX extensions pre-installed:
-
-- [interceptor](https://github.com/matthewwall/weewx-interceptor)
-- [mqtt](https://github.com/weewx/weewx/wiki/mqtt)
-
 ## Running ##
-
-### Running with Docker ###
-
-Pull `felddy/weewx` from the Docker repository:
-
-```console
-docker pull felddy/weewx
-```
-
-### Run ###
 
 The easiest way to start the container is to create a
 `docker-compose.yml` similar to the following.  If you use a
 serial port to connect to your weather station, make sure the
-container has permissions to access the port.  The uid/gid can
-be set using the environment variables below.
+container has permissions to access the port.
 
 Modify any paths or devices as needed:
 
 ```yaml
 ---
-version: "3.8"
-
-volumes:
-  data:
+name: "weewx"
 
 services:
   weewx:
-    image: felddy/weewx
-    init: true
-    restart: "yes"
+    image: felddy/weewx:5.1.0
     volumes:
       - type: bind
         source: ./data
         target: /data
-    environment:
-      - TIMEZONE=UTC
-      - WEEWX_UID=weewx
-      - WEEWX_GID=dialout
     devices:
       - "/dev/ttyUSB0:/dev/ttyUSB0"
 ```
@@ -72,7 +47,7 @@ services:
    the container and generate a configuration file:
 
     ```console
-    docker compose run weewx
+    docker compose run --rm weewx
     ```
 
 1. The configuration file will be created in the `data` directory.  You should
@@ -102,7 +77,7 @@ services:
 1. Update your configuration file (a backup will be created):
 
     ```console
-    docker compose run weewx --upgrade
+    docker compose run --rm weewx station upgrade
     ```
 
 1. Read through the new configuration and verify.
@@ -113,22 +88,77 @@ services:
 1. Start the container up with the new image version:
 
     ```console
-    docker compose up -d
+    docker compose up --detach
     ```
+
+## Migrating ##
+
+If you are migrating a WeeWX installation, you need to configure the logger to
+write to the console. Add the following to your `weewx.conf` file to see the log
+output in the container logs:
+
+```ini
+[Logging]
+    [[root]]
+        level = INFO
+        handlers = console,
+```
+
+## Installing WeeWX Extensions ##
+
+If arguments are passed to the container, they are forwarded on to the
+[`weectl`](https://weewx.com/docs/5.1/utilities/weectl-about/) command.  This
+can be used to install extensions:
+
+```console
+docker compose run --rm weewx \
+  extension install --yes \
+  https://github.com/matthewwall/weewx-windy/archive/master.zip
+```
+
+```console
+docker compose run --rm weewx \
+  extension install --yes \
+  https://github.com/matthewwall/weewx-mqtt/archive/master.zip
+```
+
+## Installing Python Packages ##
+
+To install and persist Python packages, use the `pip` command. The libraries
+will be installed into the `data` volume, ensuring they persist between
+container restarts.
+
+```console
+docker compose run --rm --entrypoint pip weewx \
+  install git+https://github.com/felddy/weewx-home-assistant@v1.0.0
+```
+
+## Image tags ##
+
+The images of this container are tagged with [semantic
+versions](https://semver.org) that align with the [version and build of
+WeeWX](https://weewx.com/docs.html) that they support.
+
+> [!TIP]
+> It is recommended that users use the major version tag: `:5` Using the major
+> tag will ensure that you receive the most recent version of the software that
+> is compatible with your saved data, and prevents inadvertent upgrades to a new
+> major version.
+
+| Image:tag | Description |
+|-----------|-------------|
+|`felddy/weewx:5`| The most recent image matching the major version number.  Most users will use this tag. |
+|`felddy/weewx:5.1`| The most recent image matching the major and minor version numbers. |
+|`felddy/weewx:5.1.0`| An exact image version. |
+
+See the [tags tab](https://hub.docker.com/r/felddy/weewx/tags) on Docker
+Hub for a list of all the supported tags.
 
 ## Volumes ##
 
 | Mount point | Purpose        |
 |-------------|----------------|
-| `/data`     | configuration file and sqlite database storage |
-
-## Environment Variables ##
-
-| Variable       | Purpose | Default |
-|----------------|---------|---------|
-| `TIMEZONE`     | Container [TZ database name](https://en.wikipedia.org/wiki/List_of_tz_database_time_zones#List) | `UTC` |
-| `WEEWX_UID`    | `uid` the daemon will be run under | `weewx` |
-| `WEEWX_GID`    | `gid` the deamon will be run under | `weewx` |
+| `/data`     | [WeeWX root](https://weewx.com/docs/5.1/usersguide/where/#location-of-weewx-components) directory |
 
 ## Building from source ##
 
@@ -136,7 +166,7 @@ Build the image locally using this git repository as the [build context](https:/
 
 ```console
 docker build \
-  --tag felddy/weewx:4.8.0 \
+  --tag felddy/weewx:5.1.0 \
   https://github.com/felddy/weewx-docker.git#develop
 ```
 
@@ -160,20 +190,8 @@ Docker:
     docker buildx build \
       --platform linux/amd64 \
       --output type=docker \
-      --tag felddy/weewx:4.8.0 .
+      --tag felddy/weewx:5.1.0 .
     ```
-
-## Debugging ##
-
-There are a few helper arguments that can be used to diagnose container issues
-in your environment.
-
-| Purpose | Command |
-|---------|---------|
-| Generate the default configuration | `docker compose run weewx` |
-| Upgrade a previous configuration | `docker compose run weewx --upgrade` |
-| Generate a test (simulator) configuration | `docker compose run weewx --gen-test-config` |
-| Drop into a shell in the container | `docker compose run weewx --shell` |
 
 ## Contributing ##
 
