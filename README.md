@@ -129,7 +129,8 @@ will be installed into the `data` volume, ensuring they persist between
 container restarts.
 
 ```console
-docker compose run --rm --entrypoint pip weewx install git+https://github.com/felddy/weewx-home-assistant@v1.0.0
+docker compose run --rm --entrypoint pip weewx \
+  install git+https://github.com/felddy/weewx-home-assistant@v1.0.0
 ```
 
 ## Image tags ##
