@@ -4,14 +4,9 @@ ARG PYTHON_VERSION=3.13.0
 ARG WEEWX_UID=1000
 ARG WEEWX_HOME="/home/weewx"
 
-FROM --platform=$BUILDPLATFORM tonistiigi/xx AS xx
+FROM python:${PYTHON_VERSION} AS build-stage
 
-FROM --platform=$BUILDPLATFORM python:${PYTHON_VERSION} AS build-stage
-
-COPY --from=xx / /
 RUN apt-get update && apt-get install -y clang lld
-ARG TARGETPLATFORM
-RUN xx-apt install -y libc6-dev
 
 WORKDIR /tmp
 RUN \

@@ -28,7 +28,7 @@ name: "weewx"
 
 services:
   weewx:
-    image: felddy/weewx:5.1.0
+    image: felddy/weewx:5
     volumes:
       - type: bind
         source: ./data
